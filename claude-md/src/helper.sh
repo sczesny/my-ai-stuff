@@ -37,6 +37,17 @@ ignore() {
   copy "$1" > /dev/null
 }
 
+# edit <sed script>: filters stdin through sed, but fails when the script changes nothing, so upstream drift is noticed
+edit() {
+  local in out
+  # trailing "." keeps the trailing blank lines that $(...) would strip
+  in=$(cat; echo .)
+  out=$(printf '%s' "${in%.}" | sed "$1"; echo .)
+  # empty input means an earlier step in the pipe already failed and reported
+  [[ $in == . || $in != "$out" ]] || { echo "no effect: sed '$1' on $src.md" >&2; return 1; }
+  printf '%s' "${out%.}"
+}
+
 # check: warns about every heading in a fetched file that was not copied, introduced or ignored
 check() {
   local f
