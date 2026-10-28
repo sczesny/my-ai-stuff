@@ -53,6 +53,10 @@ fetch juliusbrussee/caveman bad48a0e1df55e05e3f52249afa35ecc1909ee76 skills/cave
     copy "## Pre-send check" |
         sed 's/^2\. Last sentence recaps or offers help? Delete\./& Keep the ponytail closing line (skipped, risks)./'
 
+    from ../../tldr/SKILL
+    copy "# Too long; didn't read" |
+        sed 's/not documents or files\./& When another section of this file tells you to add something to a reply, keep it./'
+
 } | cat -s | sed '${/^$/d}' > ../CLAUDE.md
 
 check
